@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GravityTibia - Web Retro MMORPG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="game-header">
+      <div class="logo">
+        <span class="logo-pixel">GRAVITY</span>
+        <span class="logo-classic">TIBIA</span>
+      </div>
+      <div class="status-panel">
+        <div class="status-item">
+          <span class="indicator online"></span>
+          <span id="player-count">Online: 1</span>
+        </div>
+        <div class="status-item">
+          <span class="label">Ping:</span>
+          <span id="ping-value" class="value">-- ms</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Game Section -->
+    <main class="game-layout">
+      
+      <!-- Left Panel: Chat & Controls -->
+      <section class="panel side-panel left-panel">
+        <div class="panel-header">
+          <h3>Chat do Canal</h3>
+        </div>
+        <div class="chat-container">
+          <div id="chat-messages" class="chat-messages">
+            <!-- Mensagens do sistema ou dos jogadores aparecem aqui -->
+          </div>
+          <form id="chat-form" class="chat-form">
+            <input type="text" id="chat-input" placeholder="Pressione Enter para conversar..." autocomplete="off" maxlength="100">
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+        
+        <div class="controls-guide">
+          <h4>Como Jogar</h4>
+          <ul>
+            <li>Use as setas <kbd>▲</kbd> <kbd>▼</kbd> <kbd>◀</kbd> <kbd>▶</kbd> ou <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> para andar.</li>
+            <li>Digite no chat no painel acima para interagir com outros heróis.</li>
+            <li>Abra o jogo em outra aba para simular outro jogador!</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Center Panel: The Game Screen -->
+      <section class="game-screen-container">
+        <div class="game-screen-wrapper">
+          <canvas id="game-canvas"></canvas>
+          <div class="scanlines"></div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Inventory & Skills (Tibia-like) -->
+      <section class="panel side-panel right-panel">
+        <div class="panel-header">
+          <h3>Personagem</h3>
+        </div>
+        
+        <div class="character-identity">
+          <div id="char-name" class="char-name">Carregando...</div>
+          <div class="char-vocation">Royal Paladin (Lv. 1)</div>
+        </div>
+
+        <!-- Minimap Section -->
+        <div class="minimap-section">
+          <h4>Minimapa</h4>
+          <div class="minimap-container">
+            <canvas id="minimap-canvas" width="200" height="200"></canvas>
+            <div id="minimap-coords" class="minimap-coords">X: --, Y: --</div>
+          </div>
+        </div>
+
+        <!-- Vital Bars -->
+        <div class="status-bars">
+          <div class="bar-group">
+            <div class="bar-label"><span>HP</span><span id="hp-text">150 / 150</span></div>
+            <div class="bar-outer hp-bar">
+              <div class="bar-inner" style="width: 100%;"></div>
+            </div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label"><span>Mana</span><span id="mana-text">80 / 80</span></div>
+            <div class="bar-outer mana-bar">
+              <div class="bar-inner" style="width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inventory Grid -->
+        <div class="inventory-section">
+          <h4>Equipamentos</h4>
+          <div class="inventory-grid">
+            <div class="inv-slot slot-empty head" data-tooltip="Capacete"></div>
+            <div class="inv-slot slot-empty armor" data-tooltip="Armadura"></div>
+            <div class="inv-slot slot-empty legs" data-tooltip="Calças"></div>
+            <div class="inv-slot slot-empty boots" data-tooltip="Botas"></div>
+            <div class="inv-slot slot-empty weapon" data-tooltip="Arma Principal"></div>
+            <div class="inv-slot slot-empty shield" data-tooltip="Escudo"></div>
+            <div class="inv-slot slot-empty amulet" data-tooltip="Amuleto"></div>
+            <div class="inv-slot slot-empty ring" data-tooltip="Anel"></div>
+            <div class="inv-slot slot-empty backpack" data-tooltip="Mochila"></div>
+          </div>
+        </div>
+
+        <!-- Skills list -->
+        <div class="skills-section">
+          <h4>Habilidades</h4>
+          <div class="skill-row">
+            <span>Fist Fighting</span>
+            <span class="skill-val">15</span>
+          </div>
+          <div class="skill-row">
+            <span>Distance Fighting</span>
+            <span class="skill-val">25</span>
+          </div>
+          <div class="skill-row">
+            <span>Shielding</span>
+            <span class="skill-val">20</span>
+          </div>
+          <div class="skill-row">
+            <span>Magic Level</span>
+            <span class="skill-val">5</span>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <footer class="game-footer">
+      <p>&copy; 2026 GravityTibia. Desenvolvido com fins demonstrativos de MMORPG direto no navegador.</p>
+    </footer>
+  </div>
+
+  <!-- Socket.io library injected by the server -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>

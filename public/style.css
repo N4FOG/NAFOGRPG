@@ -1,0 +1,583 @@
+/* -------------------------------------------------------------
+ * ESTILIZAÇÃO DO TIBIA MMORPG PROTÓTIPO (GRAVITYTIBIA)
+ * ------------------------------------------------------------- */
+
+/* Variaveis de Design */
+:root {
+  --bg-primary: #12141c;
+  --bg-secondary: #1a1d29;
+  --bg-tertiary: #222736;
+  
+  --border-color: #2e354f;
+  --border-highlight: #4d5b8c;
+  
+  --accent-color: #3498db;
+  --accent-glow: rgba(52, 152, 219, 0.4);
+  
+  --health-color: #2ecc71;
+  --health-bg: #27ae60;
+  --mana-color: #3498db;
+  --mana-bg: #2980b9;
+  
+  --text-main: #e2e8f0;
+  --text-muted: #64748b;
+  --text-highlight: #f1c40f;
+  
+  --slot-bg: rgba(34, 39, 54, 0.6);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+  
+  --font-ui: 'Outfit', sans-serif;
+  --font-retro: 'Press Start 2P', monospace;
+}
+
+/* Reset Geral */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Container de Toda a Aplicação */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 10px;
+  gap: 10px;
+}
+
+/* Cabeçalho */
+.game-header {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.logo-pixel {
+  font-family: var(--font-retro);
+  font-size: 1.2rem;
+  color: var(--text-highlight);
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+  letter-spacing: -1px;
+}
+
+.logo-classic {
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.status-panel {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-tertiary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.indicator.online {
+  background-color: #2ecc71;
+  box-shadow: 0 0 8px #2ecc71;
+}
+
+.status-item .label {
+  color: var(--text-muted);
+}
+
+.status-item .value {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* Layout Principal */
+.game-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr 320px;
+  gap: 10px;
+  flex: 1;
+  min-height: 0; /* Permite scroll em containers internos se necessário */
+}
+
+/* Painéis Laterais Comuns */
+.panel {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.panel-header {
+  background-color: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 16px;
+}
+
+.panel-header h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+/* Painel Esquerdo: Chat e Como Jogar */
+.left-panel {
+  justify-content: space-between;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 12px;
+  gap: 10px;
+  min-height: 350px;
+}
+
+.chat-messages {
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 400px;
+  scroll-behavior: smooth;
+}
+
+.chat-message {
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.chat-message .sender {
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.chat-message.system {
+  font-style: italic;
+}
+
+.chat-form {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-form input {
+  flex: 1;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.chat-form input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.chat-form button {
+  background-color: var(--accent-color);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  color: white;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.chat-form button:hover {
+  background-color: #2980b9;
+}
+
+.controls-guide {
+  background-color: rgba(34, 39, 54, 0.4);
+  border-top: 1px solid var(--border-color);
+  padding: 16px;
+}
+
+.controls-guide h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.controls-guide ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--text-main);
+  opacity: 0.85;
+}
+
+.controls-guide kbd {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-highlight);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.5);
+}
+
+/* Painel Central: Canvas da Tela do Jogo */
+.game-screen-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-screen-wrapper {
+  position: relative;
+  border: 4px solid var(--border-highlight);
+  border-radius: 6px;
+  box-shadow: var(--shadow-lg);
+  aspect-ratio: 1 / 1;
+  max-height: 100%;
+  max-width: 100%;
+  background-color: #000;
+  overflow: hidden;
+}
+
+#game-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Efeito Retro de Scanlines */
+.scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.7;
+}
+
+/* Painel Direito: Personagem, Inventário e Skills */
+.right-panel {
+  padding: 16px;
+  gap: 20px;
+}
+
+.character-identity {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.char-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-highlight);
+  margin-bottom: 4px;
+}
+
+.char-vocation {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Barras de Status Vital */
+.status-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.bar-outer {
+  height: 12px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bar-inner {
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.hp-bar .bar-inner {
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+  box-shadow: 0 0 6px rgba(46, 204, 113, 0.6);
+}
+
+.mana-bar .bar-inner {
+  background: linear-gradient(90deg, #2980b9, #3498db);
+  box-shadow: 0 0 6px rgba(52, 152, 219, 0.6);
+}
+
+/* Minimapa */
+.minimap-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.minimap-section h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 4px;
+}
+
+.minimap-container {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+  transition: border-color 0.25s ease;
+}
+
+.minimap-container:hover {
+  border-color: var(--border-highlight);
+}
+
+#minimap-canvas {
+  width: 140px;
+  height: 140px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background-color: #000;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.minimap-coords {
+  font-family: var(--font-retro);
+  font-size: 0.6rem;
+  color: var(--text-highlight);
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.5px;
+}
+
+/* Grade de Inventário (Tibia style) */
+.inventory-section h4, .skills-section h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 4px;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  justify-items: center;
+  max-width: 180px;
+  margin: 0 auto;
+}
+
+.inv-slot {
+  width: 46px;
+  height: 46px;
+  background-color: var(--slot-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.inv-slot:hover {
+  border-color: var(--border-highlight);
+  background-color: var(--bg-tertiary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Icones representativos para slots vazios de Tibia */
+.inv-slot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  opacity: 0.2;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.inv-slot.head::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5zm3 8a3 3 0 0 1-6 0V7a3 3 0 0 1 6 0v3zm-3 5c-3.87 0-7 3.13-7 7h14c0-3.87-3.13-7-7-7z"/></svg>'); }
+.inv-slot.armor::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm0 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/></svg>'); }
+.inv-slot.legs::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M6 2v10h4V2H6zm6 0v10h4V2h-4zM6 14v8h4v-8H6zm6 0v8h4v-8h-4z"/></svg>'); }
+.inv-slot.boots::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M4 17h6v5H2v-5zm16 0h2v5h-8v-5h6z"/></svg>'); }
+.inv-slot.weapon::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M6.34 16.34l-3.53 3.53c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l3.53-3.53-1.41-1.41zm12.37-12.7c-.78-.78-2.05-.78-2.83 0l-9.9 9.9 2.83 2.83 9.9-9.9c.78-.78.78-2.05 0-2.83z"/></svg>'); }
+.inv-slot.shield::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>'); }
+.inv-slot.backpack::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-8-2h4v2h-4V4z"/></svg>'); }
+.inv-slot.amulet::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"/></svg>'); }
+.inv-slot.ring::before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>'); }
+
+/* Posicionamento do Grid de Equipamento clássico */
+.inv-slot.amulet { grid-column: 1; grid-row: 1; }
+.inv-slot.head { grid-column: 2; grid-row: 1; }
+.inv-slot.backpack { grid-column: 3; grid-row: 1; }
+
+.inv-slot.weapon { grid-column: 1; grid-row: 2; }
+.inv-slot.armor { grid-column: 2; grid-row: 2; }
+.inv-slot.shield { grid-column: 3; grid-row: 2; }
+
+.inv-slot.ring { grid-column: 1; grid-row: 3; }
+.inv-slot.legs { grid-column: 2; grid-row: 3; }
+.inv-slot.boots { grid-column: 2; grid-row: 4; }
+
+/* Lista de Habilidades */
+.skills-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.skill-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(255,255,255,0.05);
+  font-size: 0.85rem;
+}
+
+.skill-row:last-child {
+  border-bottom: none;
+}
+
+.skill-row span:first-child {
+  color: var(--text-muted);
+}
+
+.skill-row .skill-val {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* Rodapé */
+.game-footer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding: 8px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 10px;
+}
+
+/* Responsividade Básica */
+@media (max-width: 1024px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .game-screen-container {
+    order: -1; /* Joga a tela para o topo em telas pequenas */
+    height: 500px;
+  }
+}
