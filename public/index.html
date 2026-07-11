@@ -147,8 +147,75 @@
     </footer>
   </div>
 
+  <!-- Telas de Menu e Criação de Personagem (Overlays) -->
+  <div id="start-screen-overlay" class="menu-overlay">
+    <div class="menu-container">
+      <h1 class="menu-title">GRAVITY TIBIA</h1>
+      <p class="menu-subtitle">Mundo Feudal e RPG de Arena</p>
+      
+      <div class="menu-buttons">
+        <button id="btn-continue" class="menu-btn disabled" disabled>Continuar</button>
+        <button id="btn-create-char" class="menu-btn primary">Criar Personagem</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="char-creation-overlay" class="menu-overlay hidden">
+    <div class="menu-container creation-container">
+      <h2 style="font-family: var(--font-retro); font-size: 1.1rem; color: var(--text-highlight); border-bottom: 2px solid var(--border-color); padding-bottom: 8px; margin-bottom: 12px;">Criação de Personagem</h2>
+      
+      <div class="creation-form">
+        <!-- Nome -->
+        <div class="form-group">
+          <label>Nome do Herói:</label>
+          <input type="text" id="char-name-input" placeholder="Ex: Alden Karstark" maxlength="20" autocomplete="off">
+        </div>
+        
+        <!-- Sexo -->
+        <div class="form-group">
+          <label>Gênero:</label>
+          <div class="radio-group">
+            <button type="button" class="radio-btn active" data-gender="M">♂ Masculino</button>
+            <button type="button" class="radio-btn" data-gender="F">♀ Feminino</button>
+          </div>
+        </div>
+
+        <!-- Classe (Abas de Raças) -->
+        <div class="form-group">
+          <label>Categoria Racial & Classe:</label>
+          <div class="tab-header" id="race-tabs">
+            <button type="button" class="tab-btn active" data-race="humans">Humanos</button>
+            <button type="button" class="tab-btn" data-race="fantastic">Fantásticos</button>
+            <button type="button" class="tab-btn" data-race="darkness">Trevas</button>
+            <button type="button" class="tab-btn" data-race="celestials">Celestiais</button>
+            <button type="button" class="tab-btn" data-race="differents">Diferentões</button>
+          </div>
+          <div class="classes-grid" id="classes-list">
+            <!-- Gerado dinamicamente no JavaScript -->
+          </div>
+          <div class="selected-perk-box" id="class-perk-box">
+            Selecione uma classe acima para ver os atributos e habilidades passivas.
+          </div>
+        </div>
+
+        <!-- Casa / Reino -->
+        <div class="form-group">
+          <label>Casa Feudal / Reino de Origem:</label>
+          <div class="houses-grid" id="houses-list">
+            <!-- Gerado dinamicamente no JavaScript -->
+          </div>
+          <div class="selected-perk-box" id="house-perk-box">
+            Selecione uma casa feudal acima para ver os bônus regionais de origem.
+          </div>
+        </div>
+
+        <button id="btn-start-adventure" class="menu-btn start-btn disabled" disabled>INICIAR AVENTURA</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Socket.io library injected by the server -->
   <script src="/socket.io/socket.io.js"></script>
-  <script src="client.js"></script>
+  <script type="module" src="client.js"></script>
 </body>
 </html>

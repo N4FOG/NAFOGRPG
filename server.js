@@ -220,29 +220,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 io.on('connection', (socket) => {
   console.log(`Jogador conectado: ${socket.id}`);
 
-  // Gerar dados iniciais para o novo jogador
-  const playerColor = PLAYER_COLORS[Math.floor(Math.random() * PLAYER_COLORS.length)];
-  const playerNumber = Math.floor(100 + Math.random() * 900);
-  const playerName = `Hero_${playerNumber}`;
-  
-  // Posicionar jogador aleatoriamente dentro do grid usando local seguro com status vital
-  const startPos = getRandomWalkableTile();
-  players[socket.id] = {
-    id: socket.id,
-    name: playerName,
-    color: playerColor,
-    x: startPos.x,
-    y: startPos.y,
-    hp: 150,
-    maxHp: 150,
-    mana: 80,
-    maxMana: 80,
-    level: 1,
-    exp: 0,
-    targetId: null,
-    lastAttackTime: 0
-  };
-
   // Enviar configurações do mapa, matriz do grid, monstros e estado dos jogadores para o jogador conectado
   socket.emit('init', {
     mapWidth: MAP_WIDTH,
@@ -254,18 +231,66 @@ io.on('connection', (socket) => {
     monsters: monsters
   });
 
-  // Enviar os status iniciais do próprio jogador
-  socket.emit('player_update', getPlayerStats(players[socket.id]));
+  // Escutar evento de entrada no jogo do personagem criado
+  socket.on('join_game', (charData) => {
+    // charData = { name, gender, className, classEmoji, houseName, houseColor }
+    
+    const startPos = getRandomWalkableTile();
+    
+    // Configurar o jogador com status iniciais + bônus de casa feudal
+    let maxHp = 150;
+    let maxMana = 80;
+    
+    // Guardião do Norte: +30 de Vida Máxima
+    if (charData.houseName === 'Guardião do Norte') {
+      maxHp += 30;
+    }
+    // Defensor Inabalável: +50 de Vida Máxima
+    if (charData.houseName === 'Defensor Inabalável') {
+      maxHp += 50;
+    }
 
-  // Notificar outros jogadores que um novo jogador entrou
-  socket.broadcast.emit('player_joined', players[socket.id]);
+    players[socket.id] = {
+      id: socket.id,
+      name: charData.name,
+      color: charData.houseColor, // Cor temática da casa
+      gender: charData.gender,
+      className: charData.className,
+      classEmoji: charData.classEmoji,
+      houseName: charData.houseName,
+      x: startPos.x,
+      y: startPos.y,
+      hp: maxHp,
+      maxHp: maxHp,
+      mana: maxMana,
+      maxMana: maxMana,
+      level: 1,
+      exp: 0,
+      targetId: null,
+      lastAttackTime: 0
+    };
 
-  // Mensagem do sistema no chat avisando sobre a entrada
-  io.emit('chat_message', {
-    sender: 'Sistema',
-    text: `${playerName} entrou no jogo!`,
-    color: '#2ecc71',
-    system: true
+    const player = players[socket.id];
+
+    // Enviar mensagem global de boas-vindas
+    io.emit('chat_message', {
+      sender: 'Sistema',
+      text: `${player.name} (${charData.className}) da casa ${charData.houseName} entrou no jogo!`,
+      color: player.color,
+      system: true
+    });
+
+    // Enviar confirmação de entrada bem-sucedida para o próprio jogador
+    socket.emit('join_success', {
+      playerId: socket.id,
+      players: players
+    });
+
+    // Notificar outros jogadores que um novo jogador entrou
+    socket.broadcast.emit('player_joined', player);
+
+    // Enviar status inicial do próprio jogador
+    socket.emit('player_update', getPlayerStats(player));
   });
 
   // Escutar movimento do jogador
@@ -376,7 +401,11 @@ io.on('connection', (socket) => {
           const monster = monsters[mid];
           const dist = Math.max(Math.abs(player.x - monster.x), Math.abs(player.y - monster.y));
           if (dist <= 1) {
-            const dmg = Math.floor(Math.random() * 21) + 30; // 30 a 50 de dano
+            let baseDmg = Math.floor(Math.random() * 21) + 30; // 30 a 50 de dano
+            if (player.houseName === 'Sangue do Dragão') {
+              baseDmg = Math.round(baseDmg * 1.30);
+            }
+            const dmg = baseDmg;
             monster.hp = Math.max(0, monster.hp - dmg);
             monstersUpdated = true;
 
@@ -549,17 +578,56 @@ setInterval(() => {
     // Ataque corpo a corpo (distância <= 1)
     const dist = Math.max(Math.abs(player.x - monster.x), Math.abs(player.y - monster.y));
     if (dist <= 1) {
-      const dmg = Math.floor(Math.random() * 8) + 1; // 1 a 8 de dano físico
+      let baseDmg = Math.floor(Math.random() * 8) + 1;
+      let critChance = 0.05; // 5% chance base
+
+      // Sangue do Dragão: +30% de dano, +20% de crítico
+      if (player.houseName === 'Sangue do Dragão') {
+        baseDmg = Math.round(baseDmg * 1.30);
+        critChance += 0.20;
+      }
+
+      // Atirador de Elite: +25% de chance de crítico
+      if (player.className === 'Atirador de Elite' || player.className === 'Atiradora de Elite') {
+        critChance += 0.25;
+      }
+
+      // Vampiro: 5% Roubo de Vida (Sanguessuga)
+      const hasLifesteal = (player.className === 'Vampiro' || player.className === 'Vampira');
+
+      // Calcular Crítico
+      const isCrit = Math.random() < critChance;
+      let dmg = baseDmg;
+      if (isCrit) {
+        dmg *= 2;
+      }
+
       monster.hp = Math.max(0, monster.hp - dmg);
       player.lastAttackTime = now;
       monstersUpdated = true;
 
-      // Dano flutuante no monstro (Amarelo)
+      // Aplicar Lifesteal
+      if (hasLifesteal) {
+        const steal = Math.max(1, Math.floor(dmg * 0.05));
+        player.hp = Math.min(player.maxHp, player.hp + steal);
+        const socket = io.sockets.sockets.get(player.id);
+        if (socket) {
+          socket.emit('player_update', getPlayerStats(player));
+        }
+        io.emit('floating_effect', {
+          x: player.x,
+          y: player.y,
+          text: `+${steal}`,
+          color: '#2ecc71'
+        });
+      }
+
+      // Dano flutuante no monstro (Vermelho brilhante se crit, Amarelo se normal)
       io.emit('floating_effect', {
         x: monster.x,
         y: monster.y,
-        text: dmg.toString(),
-        color: '#ffcc00'
+        text: dmg.toString() + (isCrit ? '!' : ''),
+        color: isCrit ? '#ff3333' : '#ffcc00'
       });
 
       // Morte do monstro
@@ -645,7 +713,14 @@ setInterval(() => {
 
       if (dist === 1) {
         // Atacar jogador
-        const dmg = Math.floor(Math.random() * monster.damage) + 1;
+        let baseDmg = Math.floor(Math.random() * monster.damage) + 1;
+        
+        // Defensor Inabalável: Reduz em 15% todo dano recebido
+        if (nearestPlayer.houseName === 'Defensor Inabalável') {
+          baseDmg = Math.max(1, Math.round(baseDmg * 0.85));
+        }
+        
+        const dmg = baseDmg;
         nearestPlayer.hp = Math.max(0, nearestPlayer.hp - dmg);
         monster.lastMoveTime = now;
 
