@@ -385,99 +385,106 @@ export function drawIsoMonster(ctx, monster, isoX, isoY, w, h, targetId) {
   }
   ctx.fill();
 
-  if (monster.type === 'rat') {
-    // Cauda rosa
-    ctx.strokeStyle = '#ffb3ba';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(centerX - 8, centerY + 3);
-    ctx.quadraticCurveTo(centerX - 14, centerY + 1, centerX - 16, centerY + 6);
-    ctx.stroke();
+  // 3. Desenho do corpo do Monstro (imagem de sprite ou procedimental)
+  if (monster.type === 'rat' && sprites.rat) {
+    ctx.drawImage(sprites.rat, centerX - 24, isoY - 32, 48, 48);
+  } else if (monster.type === 'orc' && sprites.orc) {
+    ctx.drawImage(sprites.orc, centerX - 32, isoY - 48, 64, 64);
+  } else {
+    if (monster.type === 'rat') {
+      // Cauda rosa
+      ctx.strokeStyle = '#ffb3ba';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(centerX - 8, centerY + 3);
+      ctx.quadraticCurveTo(centerX - 14, centerY + 1, centerX - 16, centerY + 6);
+      ctx.stroke();
 
-    // Corpo oval
-    ctx.fillStyle = '#7f8c8d';
-    ctx.strokeStyle = '#2c3e50';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.ellipse(centerX, centerY + 1, 10, 6, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+      // Corpo oval
+      ctx.fillStyle = '#7f8c8d';
+      ctx.strokeStyle = '#2c3e50';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.ellipse(centerX, centerY + 1, 10, 6, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
 
-    // Cabeça
-    ctx.fillStyle = '#6c7a89';
-    ctx.beginPath();
-    ctx.ellipse(centerX + 5, centerY - 1, 5, 4.5, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+      // Cabeça
+      ctx.fillStyle = '#6c7a89';
+      ctx.beginPath();
+      ctx.ellipse(centerX + 5, centerY - 1, 5, 4.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
 
-    // Orelhas
-    ctx.fillStyle = '#ffb3ba';
-    ctx.beginPath(); ctx.arc(centerX + 2, centerY - 5, 2, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(centerX + 6, centerY - 5, 2, 0, Math.PI * 2); ctx.fill();
+      // Orelhas
+      ctx.fillStyle = '#ffb3ba';
+      ctx.beginPath(); ctx.arc(centerX + 2, centerY - 5, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(centerX + 6, centerY - 5, 2, 0, Math.PI * 2); ctx.fill();
 
-    // Olhos vermelhos
-    ctx.fillStyle = '#ff3333';
-    ctx.fillRect(centerX + 5, centerY - 2, 1.5, 1.5);
+      // Olhos vermelhos
+      ctx.fillStyle = '#ff3333';
+      ctx.fillRect(centerX + 5, centerY - 2, 1.5, 1.5);
 
-    // Bigodes
-    ctx.strokeStyle = '#111';
-    ctx.lineWidth = 0.5;
-    ctx.beginPath();
-    ctx.moveTo(centerX + 9, centerY - 1); ctx.lineTo(centerX + 13, centerY - 2);
-    ctx.moveTo(centerX + 9, centerY + 1); ctx.lineTo(centerX + 13, centerY + 2);
-    ctx.stroke();
+      // Bigodes
+      ctx.strokeStyle = '#111';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(centerX + 9, centerY - 1); ctx.lineTo(centerX + 13, centerY - 2);
+      ctx.moveTo(centerX + 9, centerY + 1); ctx.lineTo(centerX + 13, centerY + 2);
+      ctx.stroke();
 
-  } else if (monster.type === 'orc') {
-    // Pernas
-    ctx.fillStyle = '#34495e';
-    ctx.fillRect(centerX - 5, centerY + 4, 3, 6);
-    ctx.fillRect(centerX + 2, centerY + 4, 3, 6);
+    } else if (monster.type === 'orc') {
+      // Pernas
+      ctx.fillStyle = '#34495e';
+      ctx.fillRect(centerX - 5, centerY + 4, 3, 6);
+      ctx.fillRect(centerX + 2, centerY + 4, 3, 6);
 
-    // Corpo verde (Orc)
-    ctx.fillStyle = '#27ae60';
-    ctx.strokeStyle = '#1e824c';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, 8, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+      // Corpo verde (Orc)
+      ctx.fillStyle = '#27ae60';
+      ctx.strokeStyle = '#1e824c';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
 
-    // Armadura
-    ctx.fillStyle = '#784212';
-    ctx.fillRect(centerX - 8, centerY + 1, 16, 3);
+      // Armadura
+      ctx.fillStyle = '#784212';
+      ctx.fillRect(centerX - 8, centerY + 1, 16, 3);
 
-    // Cabeça
-    ctx.fillStyle = '#2ecc71';
-    ctx.beginPath();
-    ctx.arc(centerX, centerY - 5, 5.5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+      // Cabeça
+      ctx.fillStyle = '#2ecc71';
+      ctx.beginPath();
+      ctx.arc(centerX, centerY - 5, 5.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
 
-    // Olhos amarelos
-    ctx.fillStyle = '#f1c40f';
-    ctx.fillRect(centerX - 3, centerY - 7, 1.5, 1.5);
-    ctx.fillRect(centerX + 1.5, centerY - 7, 1.5, 1.5);
+      // Olhos amarelos
+      ctx.fillStyle = '#f1c40f';
+      ctx.fillRect(centerX - 3, centerY - 7, 1.5, 1.5);
+      ctx.fillRect(centerX + 1.5, centerY - 7, 1.5, 1.5);
 
-    // Capacete
-    ctx.fillStyle = '#7f8c8d';
-    ctx.strokeStyle = '#34495e';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.arc(centerX, centerY - 7, 5.5, Math.PI, 0);
-    ctx.fill();
-    ctx.stroke();
-    // Chifres
-    ctx.fillStyle = '#fff';
-    ctx.beginPath();
-    ctx.moveTo(centerX - 4, centerY - 8); ctx.lineTo(centerX - 8, centerY - 11); ctx.lineTo(centerX - 2, centerY - 9);
-    ctx.moveTo(centerX + 4, centerY - 8); ctx.lineTo(centerX + 8, centerY - 11); ctx.lineTo(centerX + 2, centerY - 9);
-    ctx.fill();
+      // Capacete
+      ctx.fillStyle = '#7f8c8d';
+      ctx.strokeStyle = '#34495e';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY - 7, 5.5, Math.PI, 0);
+      ctx.fill();
+      ctx.stroke();
+      // Chifres
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.moveTo(centerX - 4, centerY - 8); ctx.lineTo(centerX - 8, centerY - 11); ctx.lineTo(centerX - 2, centerY - 9);
+      ctx.moveTo(centerX + 4, centerY - 8); ctx.lineTo(centerX + 8, centerY - 11); ctx.lineTo(centerX + 2, centerY - 9);
+      ctx.fill();
 
-    // Machado
-    ctx.fillStyle = '#95a5a6';
-    ctx.fillRect(centerX - 11, centerY - 7, 3, 4);
-    ctx.fillStyle = '#784212';
-    ctx.fillRect(centerX - 10, centerY - 3, 1.5, 7);
+      // Machado
+      ctx.fillStyle = '#95a5a6';
+      ctx.fillRect(centerX - 11, centerY - 7, 3, 4);
+      ctx.fillStyle = '#784212';
+      ctx.fillRect(centerX - 10, centerY - 3, 1.5, 7);
+    }
   }
 
   // --- BARRA DE VIDA ---

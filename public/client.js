@@ -11,7 +11,8 @@ import {
   charNameText, 
   playerCountText, 
   pingValueText, 
-  chatMessages
+  chatMessages,
+  loadAllSprites
 } from './js/state.js';
 
 import { 
@@ -222,8 +223,9 @@ socket.on('pong_latency', (startTime) => {
 // --- LOOP PRINCIPAL DE RENDERIZAÇÃO ISOMÉTRICA ---
 
 function gameLoop() {
-  // Limpar tela
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Limpar tela com fundo de grama escuro para esconder frestas sub-pixel
+  ctx.fillStyle = '#1e824c';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // 1. Interpolação de coordenadas visuais para rolagem suave (Estilo Balrum)
   const lerpSpeed = 0.15;
@@ -688,4 +690,7 @@ startBtn.addEventListener('click', () => {
 
 // Inicializações básicas do cliente
 initInput();
-requestAnimationFrame(gameLoop);
+loadAllSprites(() => {
+  console.log('Todas as sprites foram carregadas e processadas!');
+  requestAnimationFrame(gameLoop);
+});

@@ -77,7 +77,7 @@ function chromaKeyImage(src, callback) {
     const keyG = data[1];
     const keyB = data[2];
     
-    const threshold = 40; // Limiar de diferença de cor para remover artefatos do JPG
+    const threshold = 20; // Limiar de diferença de cor para remover artefatos do JPG
     for (let i = 0; i < data.length; i += 4) {
       const r = data[i];
       const g = data[i+1];
